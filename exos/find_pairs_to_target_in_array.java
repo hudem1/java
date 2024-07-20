@@ -6,7 +6,7 @@ import java.util.Set;
 public class find_pairs_to_target_in_array {
   public static void main(String[] args) {
     ArrayList<Integer> list = new ArrayList<>(Arrays.asList(1, 4, 5, 2, 3));
-    int[] pair = findPairToTarget(list, 16);
+    int[] pair = findPairToTarget(list, 9);
     if (pair != null) System.out.println(pair[0] + " " + pair[1]);
     else System.out.println("no pair found");
   }

@@ -14,13 +14,14 @@ import java.util.LinkedList;
 public class TestTraining {
   public static void main(String[] args) {
     System.out.println("début du main de TestTraining");
+    collections_test();
   }
 
   public static void sliceStrings() {
     String mystr = new String("blabla");
   }
 
-  public void collections_test() {
+  public static void collections_test() {
     // arraylists
     System.out.println("************* ArrayLists *************");
     List<String> list = new ArrayList<String>() {{
@@ -50,6 +51,7 @@ public class TestTraining {
     });
 
     int[] intArray = {1, 2, 3, 4};
+    // intArray[4] = 2; // gives error (array is of fixed size)
     int len = intArray.length;
     String[] stringArray = {"apple", "banana", "cherry"};
 
@@ -60,6 +62,10 @@ public class TestTraining {
       add("Banana");
       add("Cherry");
     }};
+
+    // works also to initialize set at creation
+    // Set<Integer> test2 = new HashSet<>(Set.of(1, 2, 3, 4));
+
     set.size();
     set.contains("mystring");
     set.add("ahah");
