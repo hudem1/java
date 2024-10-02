@@ -21,6 +21,22 @@ Here is the [link](https://www.youtube.com/playlist?list=PLtQWXpf5JNGJagakc_kBtO
 - 40: `binary_search/TimeBasedKeyValueStore.java`
 - 39: `array/MaximumSubArray.java`
 - 38: `sliding_window/MinimumWindowSubstring.java`
-- 37: ``
-
+- 37: `binary_trees/MaximumPathSum.java`
+- 36: `design/InsertDeleteGetRandom.java`
+- 35: `matrix/LongestIncreasingPath.java`
 - 34: `dynamic_programming/MergeKLists.java`
+- 33: watched again
+- 32: watched again
+- 31: `breadth_first_search/NumberOfIslands.java`
+
+- 19: `priority_queue/TopKFrequentWords.java`
+
+- 16: `binary_trees/LowestCommonAncestor.java`
+
+- 14: `array/FindFirstMissingPositiveInteger.java`
+- 13: `design/MinStack.java`
+- 12: `binary_trees/SumLeftLeaves.java`
+- 11: `graph/CloneGraph.java`
+
+- 5: `integer/ReverseInteger.java`
+- 2: `array/FindDuplicateNumbers.java`

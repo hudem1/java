@@ -6,6 +6,7 @@ import java.util.List;
  * video: https://www.youtube.com/watch?v=tmakGVOGV3A&list=PLtQWXpf5JNGJagakc_kBtOH5-gd8btjEW&index=39&ab_channel=AlgosWithMichael
  * input: array
  * output: the sum of the sub array values giving the maximum sum
+ * Kadane's algo
  */
 public class MaximumSubArray {
   public static void main(String[] args) {

@@ -4,7 +4,7 @@ import java.util.Map;
 /**
  * video: https://www.youtube.com/watch?v=U1q16AFcjKs&list=PLtQWXpf5JNGJagakc_kBtOH5-gd8btjEW&index=38&ab_channel=AlgosWithMichael
  * input: 2 strings, 1 string whose characters to search for and another string where to search the other string's characters
- * ouput: the minimum substring where you can find all of the characters that we searched for
+ * ouput: the minimum substring where you can find all of the characters that we searched for (NOT NECESSARILY CONSECUTIVE)
  */
 public class MinimumWindowSubstring {
   public static void main(String[] args) {
