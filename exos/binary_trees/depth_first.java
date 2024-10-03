@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Stack;
 
 public class depth_first {
   public static class Node {
@@ -45,6 +47,7 @@ public class depth_first {
 
   public static void iterativeVersion(Node root) {
     Deque<Node> stack = new LinkedList<>(Arrays.asList(root));
+    // can also use Stack object: Stack<Node> nodes = new Stack<>();
 
     ArrayList<String> visited = new ArrayList<>();
     while (stack.size() != 0) {
@@ -57,5 +60,11 @@ public class depth_first {
     }
 
     System.out.println(visited);
+  }
+
+  public static void recursionVersion(Node node, List<Node> visitedNodes) {
+    if (node.left != null) recursionVersion(node.left, visitedNodes);
+    visitedNodes.add(node);
+    if (node.right != null) recursionVersion(node.right, visitedNodes);
   }
 }

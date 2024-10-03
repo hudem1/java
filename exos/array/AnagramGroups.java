@@ -64,4 +64,33 @@ public class AnagramGroups {
 
     return new ArrayList<>(groups.values());
   }
+
+  /**
+   * Same logic as above except that it uses a Map instead of a int[26]
+   *
+   * Even though this method does not automatically allocate 26 slots but only the necessary amount (up until 26 max),
+   * using a map (for each string) adds additional overhead:
+   *  - each entry is a key-value (char-int) pair instead of just an int, requiring additional memory
+   *  - maps usually require more memory than arrays (it stores objects like pointers to key and values, metadata for the hashtable like load factors, buckets)
+   *  - needs hashing and dealing with collisions
+   *
+   * The 1st solution with a int[26] remains better
+   */
+  public List<List<String>> computeSolution_v2(String[] strs) {
+    Map<Integer, List<String>> groups = new HashMap<>();
+
+    for (String str: strs) {
+        Map<Character, Integer> charsInStr = new HashMap<>();
+
+        for (int i = 0; i < str.length(); ++i)
+            charsInStr.put(str.charAt(i), charsInStr.getOrDefault(str.charAt(i), 0) + 1);
+
+        Integer occurenceKey = charsInStr.hashCode();
+
+        groups.putIfAbsent(occurenceKey, new ArrayList<>());
+        groups.get(occurenceKey).add(str);
+    }
+
+    return new ArrayList<>(groups.values());
+  }
 }

@@ -54,7 +54,7 @@ public class FindFirstMissingPositiveInteger {
    * space complexity: O(1)
    */
   private Integer solutionVersion2(int[] numbers) {
-    // First pass to replace negative/zero integer by positive out of range integers
+    // First pass to replace negative/zero integers by positive out of range integers
     for (int i = 0; i < numbers.length; i++) {
       // if number is not in valid range (especially negative/zero), we set it to a POSITIVE (important!) value
       // that is strictly superior to the valid range
@@ -83,8 +83,8 @@ public class FindFirstMissingPositiveInteger {
   }
 
   // if we didn't have to care about O(1) space complexity
-  // space complexity: O(n)
   // time complexity: O(n)
+  // space complexity: O(n)
   private Integer bruteForce(int[] numbers) {
     Set<Integer> positiveIntegersInRange = new HashSet<>();
 

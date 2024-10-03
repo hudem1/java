@@ -14,72 +14,69 @@ import java.util.Map;
  */
 public class TimeBasedKeyValueStore {
   public static void main(String[] args) {
-    InternalClass cl = new InternalClass();
-    cl.set("A", "B", 2);
-    System.out.println(cl.map.get("A").get(0));
-    System.out.println(cl.get("A", 2)); // B
-    System.out.println(cl.get("A", 3)); // B
-    System.out.println(cl.get("A", 1)); // no value for timestamp 1
+    TimeBasedKeyValueStore tmkvs = new TimeBasedKeyValueStore();
+    tmkvs.set("A", "B", 2);
+    System.out.println(tmkvs.map.get("A").get(0));
+    System.out.println(tmkvs.get("A", 2)); // B
+    System.out.println(tmkvs.get("A", 3)); // B
+    System.out.println(tmkvs.get("A", 1)); // no value for timestamp 1
 
-    cl.set("A", "C", 5);
-    System.out.println(cl.get("A", 7)); // C
-    System.out.println(cl.get("A", 4)); // B
+    tmkvs.set("A", "C", 5);
+    System.out.println(tmkvs.get("A", 7)); // C
+    System.out.println(tmkvs.get("A", 4)); // B
 
-    cl.set("D", "E", 9);
-    System.out.println(cl.get("D", 20)); // E
+    tmkvs.set("D", "E", 9);
+    System.out.println(tmkvs.get("D", 20)); // E
 
-    System.out.println(cl.get("X", 20)); // X key not set
+    System.out.println(tmkvs.get("X", 20)); // X key not set
   }
 
-  static class InternalClass {
-    class ListData {
-      String value;
-      int timestamp;
+  class ListData {
+    String value;
+    int timestamp;
 
-      public ListData(String value, int timestamp) {
-        this.value = value;
-        this.timestamp = timestamp;
-      }
+    public ListData(String value, int timestamp) {
+      this.value = value;
+      this.timestamp = timestamp;
+    }
+  }
+
+  private Map<String, List<ListData>> map = new HashMap<>();
+
+  /**
+   * time complexity: O(1)
+   * space complexity: O(n), with n being the number of key-value pairs stored in the map
+   */
+  public void set(String key, String value, int timestamp) {
+    if (!map.containsKey(key)) map.put(key, new ArrayList<>());
+
+    map.get(key).add(new ListData(value, timestamp));
+  }
+
+  /**
+   * time complexity: O(log(n)), with n being the number of values/timestamps for a specific key
+   * space complexity: O(1)
+   */
+  public String get(String key, int timestamp) {
+    List<ListData> values = this.map.get(key);
+
+    if (values == null || values.size() == 0) return key + " not set";
+
+    int left = 0;
+    int right = values.size() - 1;
+
+    while (left < right) {
+      // HAVE to do + 1 because if values contain for example 2 timestamps strictly greater than the timestamp we search for
+      // there would be an infinite loop without the + 1
+      int mid = (left + right + 1) / 2;
+
+      if (values.get(mid).timestamp > timestamp) right = mid - 1;
+      // mid is a potential answer (because mapValue.timestamp is <= timestamp)
+      else left = mid;
     }
 
-    private Map<String, List<ListData>> map = new HashMap<>();
-
-    /**
-     * time complexity: O(1)
-     * space complexity: O(n), with n being the number of key-value pairs stored in the map
-     */
-    public void set(String key, String value, int timestamp) {
-      if (!map.containsKey(key)) map.put(key, new ArrayList<>());
-      List<ListData> values = map.get(key);
-      // List<ListData> values = map.getOrDefault(key, new ArrayList<>());
-      values.add(new ListData(value, timestamp));
-      // map.put(key, values);
-    }
-
-    /**
-     * time complexity: O(log(n)), with n being the number of values/timestamps for a specific key
-     * space complexity: O(1)
-     */
-    public String get(String key, int timestamp) {
-      List<ListData> values = this.map.get(key);
-
-      if (values == null || values.size() == 0) return key + " not set";
-
-      int left = 0;
-      int right = values.size() - 1;
-
-      while (left != right) {
-        int mid = (left + right + 1) / 2;
-        if (values.get(mid).timestamp > timestamp) {
-          right = mid - 1;
-        } else {
-          // mid is a potential answer (because mapValue.timestamp is <= timestamp)
-          left = mid;
-        }
-      }
-
-      // values might still all be strictly > to the researched timestamp
-      return values.get(left).timestamp <= timestamp ? values.get(left).value : "no value for timestamp " + timestamp;
-    }
+    // values might still all be strictly > to the researched timestamp
+    return values.get(left).timestamp <= timestamp ? values.get(left).value : "no value for timestamp " + timestamp;
+    // also, a value is <, then left == right
   }
 }
