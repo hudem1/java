@@ -40,10 +40,10 @@ public class StringEncodeAndDecode {
     StringBuilder sb = new StringBuilder();
 
     for (String str: strs) {
-      // append the length of the string + a delimeter char
+      // append first the string's length + a delimeter char
       // because the string could start with a number
       // as the string can contain any char
-      sb.append(str.length()).append("a").append(str);
+      sb.append(str.length()).append("#").append(str);
     }
 
     return sb.toString();
@@ -59,14 +59,25 @@ public class StringEncodeAndDecode {
     int i = 0;
     while (i < str.length()) {
       int currentStrLen = 0;
-      while (str.charAt(i) != 'a') {
+      // Can also have a string builder for the string length and append to it while the character is a digit
+      // 1) the method using arithmetic (used below) is a bit more efficient because:
+      //    - space complexity: O(1), only storing an integer
+      //    - simple integer arithmetic, typically faster than building a string
+      // 2) the method with a string builder is less efficient because:
+      //    - space complexity: O(d), where d is the number of digits
+      //    - time complexity: even though is the same as for 1st method, O(d), it has some overhead due to resizing sb & managing its internal buffer
+      while (str.charAt(i) != '#') {
         currentStrLen = currentStrLen * 10 + str.charAt(i) - '0';
         ++i;
       }
-      // here i is at the delimiter character (in our case 'a')
+
+      // here i is at the delimiter character (in our case '#')
       // hence the + 1 below
-      result.add(str.substring(i + 1, i + 1 + currentStrLen));
-      i += 1 + currentStrLen;
+      int strBeginning = i + 1;
+      int strEnd = strBeginning + currentStrLen;
+      result.add(str.substring(strBeginning, strEnd));
+
+      i = strEnd;
     }
 
     return result;

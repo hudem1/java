@@ -34,26 +34,26 @@ public class ProductOfArrayDiscludingSelf {
    * I thought about bit shifting but not really applicable here (because division is not just by 2)
    */
   public int[] computeSolution(int[] nums) {
-    int[] prefix = new int[nums.length];
-    int[] postfix = new int[nums.length];
-    int[] result = new int[nums.length];
+    if (nums == null || nums.length == 0) return new int[0];
 
-    prefix[0] = nums[0];
-    for (int i = 1; i < nums.length; ++i) {
-      prefix[i] = nums[i] * prefix[i - 1];
-    }
+    int[] productsExcludingSelf = new int[nums.length];
 
-    postfix[nums.length - 1] = nums[nums.length - 1];
-    for (int i = nums.length - 2; i >= 0; --i) {
-      postfix[i] = nums[i] * postfix[i + 1];
-    }
+    // each entry is the cumulative product of previous entries
+    int[] prefixes = new int[nums.length];
+    // each entry is the cumulative product of next entries
+    int[] suffixes = new int[nums.length];
 
-    for (int i = 0; i < nums.length; ++i) {
-      int currentPrefix = i == 0 ? 1 : prefix[i - 1];
-      int currentPostfix = i == nums.length - 1 ? 1 : postfix[i + 1];
-      result[i] = currentPrefix * currentPostfix;
-    }
+    prefixes[0] = 1;
+    for (int i = 1; i < nums.length; ++i)
+      prefixes[i] = prefixes[i - 1] * nums[i - 1];
 
-    return result;
+    suffixes[nums.length - 1] = 1;
+    for (int i = nums.length - 2; i >= 0; --i)
+      suffixes[i] = suffixes[i + 1] * nums[i + 1];
+
+    for (int i = 0; i < nums.length; ++i)
+      productsExcludingSelf[i] = prefixes[i] * suffixes[i];
+
+    return productsExcludingSelf;
   }
 }
