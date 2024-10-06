@@ -1,5 +1,3 @@
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * link: https://neetcode.io/problems/search-for-word
@@ -30,8 +28,9 @@ public class SearchWordInGrid {
   public boolean computeSolution(char[][] board, String word) {
     for (int i = 0; i < board.length; ++i) {
       for (int j = 0; j < board[0].length; ++j) {
-        if (dfs(board, i, j, word, 0))
-          return true;
+        if (board[i][j] == word.charAt(0)) {
+          if (dfs(board, i, j, word, 0)) return true;
+        }
       }
     }
 
@@ -39,34 +38,24 @@ public class SearchWordInGrid {
   }
 
   private boolean dfs(char[][] board, int row, int col, String word, int charIndex) {
-    // here, charIndex will never be out of bounds
-    // because if its the correct character return true on the next if
-    // otherwise, then return false and go back to charIndex - 1
-    if (board[row][col] != word.charAt(charIndex))
-      return false;
+    if (charIndex == word.length() - 1) return true;
 
-    if (charIndex == word.length() - 1)
-      return true;
-
-    // At first, I used a set to keep track of used cells, but it adds space complexity
-    // So, might as well better use existing memory --> change used cell to other character
+    // Could have used a Set, or another [][] of ints with 1 or 0 stating whether the case has already been used
+    // but overwriting the existing [][] is more efficient (O(1) space complexity)
     board[row][col] = '#';
-    // usedCells.add(flattenedCell);
 
     for (int[] dir: directions) {
       int newRow = row + dir[0];
       int newCol = col + dir[1];
 
-      // if new computed cell is in bounds
-      if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[0].length) {
-        if (dfs(board, newRow, newCol, word, charIndex + 1))
-          return true;
+      // if newly computed cell is in bounds and cell's char is expected one
+      if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[0].length && board[newRow][newCol] == word.charAt(charIndex + 1)) {
+        if (dfs(board, newRow, newCol, word, charIndex + 1)) return true;
       }
     }
 
     // if the current cell does not lead to a solution, reset it to its original character
     board[row][col] = word.charAt(charIndex);
-    // usedCells.remove(flattenedCell);
 
     return false;
   }

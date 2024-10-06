@@ -9,68 +9,6 @@ import java.util.Stack;
  * ouput: the lowest common ancestor node
  */
 public class LowestCommonAncestor {
-  static class Node {
-    Integer value;
-    Node left;
-    Node right;
-
-    public Node(Integer value) {
-      this.value = value;
-    }
-  }
-
-  public Node computeSolution(Node root, Node node1, Node node2) {
-    Stack<Node> ancestorsToNode1 = recursiveUsingStack(root, node1);
-    Stack<Node> ancestorsToNode2 = recursiveUsingStack(root, node2);
-
-    // FYI: can iterate over a stack and print its elements like below (because use an array under the hood I think)
-    // for (Node elem: ancestorsToNode1) {
-    //   System.out.print(elem.value +  " ");
-    // }
-    // System.out.println();
-
-    // for (Node elem: ancestorsToNode2) {
-    //   System.out.print(elem.value +  " ");
-    // }
-
-    Node lastAncestor = null;
-    while (!ancestorsToNode1.isEmpty() && !ancestorsToNode2.isEmpty() && ancestorsToNode1.peek() == ancestorsToNode2.peek()) {
-      lastAncestor = ancestorsToNode1.pop();
-      ancestorsToNode2.pop();
-    }
-
-    // If we arrive until here, one leaf is higher than the other and ancestors are all equal until the higher leaf
-    // In any case, whether one stack is empty or both peeks are not equal, return last seen ancestor
-    return lastAncestor;
-  }
-
-  /**
-   * time complexity: O(log(n)), binary tree search
-   * space complexity: O(log(n)), adding ancestors to stack on path to leaf & recursive call stack
-   * We use a stack because we create it at the found leaf and add ancestors starting from the leaf (in reverse order)
-   * Alternative: we could have created an array in computeSolution() and pass it to recursive adding ancestors in correct order until found leaf
-   */
-  private Stack<Node> recursiveUsingStack(Node current, Node nodeToSearchFor) {
-    // a node is an ancestor to itself (hence, adding it)
-    if (current == nodeToSearchFor) {
-      Stack<Node> ancestors = new Stack<>();
-      ancestors.push(current);
-      return ancestors;
-    }
-
-    Stack<Node> ancestors = null;
-
-    if (current.value > nodeToSearchFor.value) {
-      ancestors = recursiveUsingStack(current.left, nodeToSearchFor);
-    } else if (current.value < nodeToSearchFor.value) {
-      ancestors = recursiveUsingStack(current.right, nodeToSearchFor);
-    }
-
-    ancestors.add(current);
-
-    return ancestors;
-  }
-
   public static void main(String[] args) {
     Node root = new Node(15);
     Node n2 = new Node(10);
@@ -108,5 +46,94 @@ public class LowestCommonAncestor {
      LowestCommonAncestor lca = new LowestCommonAncestor();
      Node result = lca.computeSolution(root, n2, n6);
      System.out.println("The result is: " + result.value);
+  }
+
+  static class Node {
+    Integer value;
+    Node left;
+    Node right;
+
+    public Node(Integer value) {
+      this.value = value;
+    }
+  }
+
+  /**
+   * time complexity: O(log(n)) (iterating only 1 time, compared to the other solution where I had to iterate 3 times)
+   * space complexity: O(1) <-- no additional data structure nor recursive call stack, pointers only
+   */
+  public Node computeSolution(Node root, Node node1, Node node2) {
+    Node searchNode1 = root;
+    Node searchNode2 = root;
+
+    Node lowestCommonAncestor = root;
+
+    while (searchNode1 == searchNode2) {
+      lowestCommonAncestor = searchNode1;
+
+      // reminder: inside the while searchNode1 = searchNode2
+      // if if-statement is true, it means one of the 2 nodes is on the path to the other
+      if (searchNode1 == node1 || searchNode1 == node2) return searchNode1;
+
+      if (node1.value > searchNode1.value) searchNode1 = searchNode1.right;
+      else searchNode1 = searchNode1.left;
+
+      if (node2.value > searchNode2.value) searchNode2 = searchNode2.right;
+      else searchNode2 = searchNode2.left;
+    }
+
+    return lowestCommonAncestor;
+  }
+
+  /**
+   * time complexity: 3 * O(log(n)) == O(log(n)), binary tree search
+   * space complexity: 2 * O(log(n)) == O(log(n)), adding ancestors to stack on path to leaf & recursive call stack
+   * We use a stack because we create it at the found leaf and add ancestors starting from the leaf (in reverse order)
+   * Alternative: we could have created an array and pass it to recursive adding ancestors in correct order until found leaf
+   */
+  public Node computeSolution_v2(Node root, Node node1, Node node2) {
+    Stack<Node> ancestorsToNode1 = recursiveUsingStack(root, node1);
+    Stack<Node> ancestorsToNode2 = recursiveUsingStack(root, node2);
+
+    // FYI: can iterate over a stack and print its elements like below (because use an array under the hood I think)
+    // for (Node elem: ancestorsToNode1) {
+    //   System.out.print(elem.value +  " ");
+    // }
+    // System.out.println();
+
+    // for (Node elem: ancestorsToNode2) {
+    //   System.out.print(elem.value +  " ");
+    // }
+
+    Node lastAncestor = null;
+    while (!ancestorsToNode1.isEmpty() && !ancestorsToNode2.isEmpty() && ancestorsToNode1.peek() == ancestorsToNode2.peek()) {
+      lastAncestor = ancestorsToNode1.pop();
+      ancestorsToNode2.pop();
+    }
+
+    // If we arrive until here, one leaf is higher than the other and ancestors are all equal until the higher leaf
+    // In any case, whether one stack is empty or both peeks are not equal, return last seen ancestor
+    return lastAncestor;
+  }
+
+  private Stack<Node> recursiveUsingStack(Node current, Node nodeToSearchFor) {
+    // a node is an ancestor to itself (hence, adding it)
+    if (current == nodeToSearchFor) {
+      Stack<Node> ancestors = new Stack<>();
+      ancestors.push(current);
+      return ancestors;
+    }
+
+    Stack<Node> ancestors = null;
+
+    if (current.value > nodeToSearchFor.value) {
+      ancestors = recursiveUsingStack(current.left, nodeToSearchFor);
+    } else if (current.value < nodeToSearchFor.value) {
+      ancestors = recursiveUsingStack(current.right, nodeToSearchFor);
+    }
+
+    ancestors.add(current);
+
+    return ancestors;
   }
 }

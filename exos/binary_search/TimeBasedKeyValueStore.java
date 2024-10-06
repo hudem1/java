@@ -66,7 +66,7 @@ public class TimeBasedKeyValueStore {
     int right = values.size() - 1;
 
     while (left < right) {
-      // HAVE to do + 1 because if values contain for example 2 timestamps strictly greater than the timestamp we search for
+      // HAVE to do + 1 because if values contain for example 2 timestamps strictly lower than the timestamp we search for
       // there would be an infinite loop without the + 1
       int mid = (left + right + 1) / 2;
 
@@ -77,6 +77,7 @@ public class TimeBasedKeyValueStore {
 
     // values might still all be strictly > to the researched timestamp
     return values.get(left).timestamp <= timestamp ? values.get(left).value : "no value for timestamp " + timestamp;
-    // also, a value is <, then left == right
+    // Also, if there is a value < to timestamp, then we end up with left == right.
+    // So, this could also be used as condition in the return statement
   }
 }
