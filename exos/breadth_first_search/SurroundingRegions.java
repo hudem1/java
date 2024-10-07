@@ -36,6 +36,7 @@ public class SurroundingRegions {
 
     int[] start = {row, col};
     Queue<int[]> oCells = new LinkedList<>(Arrays.asList(start));
+    cells[row][col] = 'M';
 
     int[][] directions = {
       {0, 1}, {1, 0}, {0, -1}, {-1, 0}
@@ -46,8 +47,6 @@ public class SurroundingRegions {
       row = currentOCell[0];
       col = currentOCell[1];
 
-      cells[row][col] = 'M';
-
       for (int[] dir: directions) {
         int newRow = dir[0] + row;
         int newCol = dir[1] + col;
@@ -55,6 +54,7 @@ public class SurroundingRegions {
         if (newRow >= 0 && newRow < numberOfRows && newCol >= 0 && newCol < numberOfCols && cells[newRow][newCol] == '0') {
           int[] neighbour = {newRow, newCol};
           oCells.add(neighbour);
+          cells[newRow][newCol] = 'M';
         }
       }
     }

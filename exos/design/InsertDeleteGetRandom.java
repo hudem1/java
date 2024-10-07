@@ -7,14 +7,17 @@ import java.util.Random;
 /**
  * video: https://www.youtube.com/watch?v=TD2g8UjXMLA&list=PLtQWXpf5JNGJagakc_kBtOH5-gd8btjEW&index=37&ab_channel=AlgosWithMichael
  * goal: We want to be able to insert, delete and get a random value, all these operations in O(1)
+ * infos:
+ *  - insert returns true if item is not present, otherwise return false
+ *  - remove returns true if item is present, otherwise return false
  * solution:
  *  - time complexity: O(1)
  *  - space complexity: O(n) for insert function only, with n being the number of elements being inserted
  */
 public class InsertDeleteGetRandom {
   static Random random = new Random();
-  static Map<Integer, Integer> elemToIndex = new HashMap<>();
-  static List<Integer> elems = new ArrayList<>();
+  static Map<Integer, Integer> indexInNumbers = new HashMap<>();
+  static List<Integer> numbers = new ArrayList<>();
 
   public static void main(String[] args) {
     System.out.println("Operation 1 is: " + insert(1));
@@ -26,36 +29,31 @@ public class InsertDeleteGetRandom {
   }
 
   public static boolean insert(Integer value) {
-    if (elemToIndex.containsKey(value))
-      return false;
+    if (indexInNumbers.containsKey(value)) return false;
 
-    Integer index = elems.size();
-    elems.add(value);
-
-    elemToIndex.put(value, index);
+    numbers.add(value);
+    indexInNumbers.put(value, numbers.size() - 1);
 
     return true;
   }
 
   public static boolean remove(Integer value) {
-    if (!elemToIndex.containsKey(value))
-      return false;
+    if (!indexInNumbers.containsKey(value)) return false;
 
-    Integer index = elemToIndex.remove(value);
+    Integer index = indexInNumbers.remove(value);
 
-    Integer lastElem = elems.get(elems.size() - 1);
-    elems.set(index, lastElem);
+    numbers.set(index, numbers.getLast());
+    int lastValue = numbers.removeLast();
 
-    elemToIndex.put(lastElem, index);
-
-    elems.removeLast();
+    // if value to remove is not the last one, update the lastValue mapping
+    if (index != numbers.size()) indexInNumbers.put(lastValue, index);
 
     return true;
   }
 
   public static Integer getRandom() {
-    int randomIndex = random.nextInt(elems.size());
+    int randomIndex = random.nextInt(numbers.size());
 
-    return elems.get(randomIndex);
+    return numbers.get(randomIndex);
   }
 }

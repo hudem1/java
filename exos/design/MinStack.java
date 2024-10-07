@@ -17,9 +17,10 @@ public class MinStack {
     minimums.push(minElem);
   }
 
-  public void pop() {
-    this.stack.pop();
+  public Integer pop() {
     this.minimums.pop();
+
+    return this.stack.pop();
   }
 
   public Integer top() {

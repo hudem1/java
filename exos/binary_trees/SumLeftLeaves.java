@@ -11,6 +11,10 @@ public class SumLeftLeaves {
     Node(Integer value) {
       this.value = value;
     }
+
+    boolean isLeaf() {
+      return left == null && right == null;
+    }
   }
 
   /**
@@ -23,11 +27,8 @@ public class SumLeftLeaves {
 
     int sum = 0;
 
-    if (node.left != null) {
-      if (node.left.left == null && node.left.right == null) {
-        sum += node.left.value;
-      } else sum += computeSolution(node.left);
-    }
+    if (node.left != null && node.left.isLeaf()) sum += node.left.value;
+    else sum += computeSolution(node.left);
 
     sum += computeSolution(node.right);
 
