@@ -147,7 +147,12 @@ public class LRU {
   public LRU(int capacity) {
     this.capacity = capacity;
 
-    this.lruMap = new LinkedHashMap<>(capacity, 1, true) {
+    // From what I understood, the capacity (hashtable size) will increase (double probably) when the size (number of elements)
+    // becomes greater than 75% of the capacity. But the size will never become greater than the INITIAL capacity (+1)
+    // because of overriding removeEldestEntry method
+    this.lruMap = new LinkedHashMap<>(capacity, 0.75f, true) {
+      // its overriding the below method that dictates a cap/max number of entries in the map
+      // otherwise the capacity and size would just continue to grow as in a normal map/linkedHashMap
       @Override
       protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
         // after each put() or putAll(), this fct will be called to see if we should remove lru entry

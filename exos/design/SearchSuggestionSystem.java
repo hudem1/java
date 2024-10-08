@@ -2,6 +2,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * video: https://www.youtube.com/watch?v=D4T2N0yAr20
+ *
+ * goal: given an array of strings (products) and a search word, retrieve the 3 first lexicographically minimum matching words
+ *
+ */
 public class SearchSuggestionSystem {
   public static void main(String[] args) {
     SearchSuggestionSystem sss = new SearchSuggestionSystem();
@@ -56,11 +62,11 @@ public class SearchSuggestionSystem {
    * space complexity: O(1)
    */
   private int[] findProductsRange(String[] sortedProducts, int left, int right, int searchWordIndex, char searchWordChar) {
-    while (left <= right && (searchWordIndex >= sortedProducts[left].length() || sortedProducts[left].charAt(searchWordIndex) != searchWordChar)) {
+    while (left <= right && (searchWordIndex >= sortedProducts[left].length() || sortedProducts[left].charAt(searchWordIndex) < searchWordChar)) {
       ++left;
     }
 
-    while (left <= right && (searchWordIndex >= sortedProducts[right].length() || sortedProducts[right].charAt(searchWordIndex) != searchWordChar)) {
+    while (left <= right && (searchWordIndex >= sortedProducts[right].length() || sortedProducts[right].charAt(searchWordIndex) > searchWordChar)) {
       --right;
     }
 
@@ -110,7 +116,7 @@ public class SearchSuggestionSystem {
     // lower bound
     left = mid;
 
-    // canoot do binary search again to find upper bound because lower bound is already > searchWord
+    // cannot do binary search again to find upper bound because lower bound is already > searchWord
     // therefore, all searchProducts[mid] will be > searchWord
 
     for (int i = left; i < sortedProducts.length - 1; i++) {
