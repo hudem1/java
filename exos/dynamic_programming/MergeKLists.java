@@ -66,20 +66,15 @@ public class MergeKLists {
     List<Integer> result = new ArrayList<>();
 
     while (list1Pointer < list1.size() || list2Pointer < list2.size()) {
-      if (list1Pointer >= list1.size()) {
-        result.add(list2.get(list2Pointer));
-        ++list2Pointer;
-      } else if (list2Pointer >= list2.size()) {
-        result.add(list1.get(list1Pointer));
-        ++list1Pointer;
-      } else {
-        if (list1.get(list1Pointer) <= list2.get(list2Pointer)) {
-          result.add(list1.get(list1Pointer));
-          ++list1Pointer;
-        } else {
-          result.add(list2.get(list2Pointer));
-          ++list2Pointer;
-        }
+      if (list1Pointer >= list1.size())
+        result.add(list2.get(list2Pointer++));
+      else if (list2Pointer >= list2.size())
+        result.add(list1.get(list1Pointer++));
+      else {
+        if (list1.get(list1Pointer) <= list2.get(list2Pointer))
+          result.add(list1.get(list1Pointer++));
+        else
+          result.add(list2.get(list2Pointer++));
       }
     }
 

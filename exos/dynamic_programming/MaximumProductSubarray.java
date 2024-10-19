@@ -2,7 +2,6 @@
 /**
  * link: https://neetcode.io/problems/maximum-product-subarray
  *
- * 
  */
 public class MaximumProductSubarray {
   public static void main(String[] args) {

@@ -68,12 +68,23 @@ public class unique_paths {
     System.out.println(Integer.MAX_VALUE);
   }
 
+  /**
+   * time complexity: O(2^(m + n)) <-- for each location, the fct computes 2 subproblems with a recursion of m + n
+   *    ^-- 2^(m + n), with m + n being for the same reason than for the space complexity
+   * space complexity: O(m * n) <-- same reason that for the solution with memoization
+   */
   public static int uniquePathsNaive(int m, int n) {
     if (m == 1 || n == 1) return 1;
 
     return uniquePathsNaive(m - 1, n) + uniquePathsNaive(m, n - 1);
   }
 
+  /**
+   * time complexity: O(m * n)
+   * space complexity: O(m * n)
+   *   ^-- O(m * n) <-- cache + O(m + n) <-- call stack }} Therefore, the cache complexity dominates the overall space complexity
+   *      ^-- O(m + n) for the call stack because it grows until m == 1 and then until n == 1
+   */
   public static BigInteger uniquePathsMemoization(int m, int n, Map<Pair<Integer, Integer>, BigInteger> memo) {
     if (m == 1 || n == 1) return BigInteger.ONE;
 
@@ -85,4 +96,21 @@ public class unique_paths {
 
     return res;
   }
+
+  /**
+   * time complexity: O(m * n)
+   * space complexity: O(m * n)
+   */
+  public int uniquePathsIterative(int m, int n) {
+    int[][] grid = new int[m][n];
+
+    for (int i = 0; i < m; i++) {
+      for (int j = 0; j < n; j++) {
+        if (i == 0 || j == 0) grid[i][j] = 1;
+        else grid[i][j] = grid[i - 1][j] + grid[i][j - 1];
+      }
+    }
+
+    return grid[m - 1][n - 1];
+}
 }

@@ -1,15 +1,54 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * link: https://leetcode.com/problems/longest-increasing-subsequence/description/
+ *
+ * input: 9, 1, 4, 2, 3, 3, 7
+ * output: 4 --> longest subsequence: 1, 2, 3, 7
+ */
 public class LongestIncreasingSubsequence {
   public static void main(String[] args) {
     LongestIncreasingSubsequence lis = new LongestIncreasingSubsequence();
     int[] nums = {9, 1, 4, 2, 3, 3, 7};
+    // result should be 4 because of the subsequence: 1, 2, 3, 7
     // int[] nums = {4, 10, 4, 3, 8, 9};
     int result = lis.computeSolution(nums);
     System.out.println("The result is: " + result);
-    // System.out.println("The result is: " + lis.longest);
   }
+
+  /**
+   * Most optimized
+   *
+   * how: if current value is greater than previous one, append it to array.
+   *      if not, replace in the array the smallest >= value (using binary search)
+   *
+   * time complexity: O(nlogn)
+   * space complexity: O(n)
+   */
+  public int binary_search(int[] nums) {
+    List<Integer> longest_sequence = new ArrayList<>();
+
+    for (int num: nums) {
+      if (longest_sequence.isEmpty() || num > longest_sequence.getLast()) {
+        longest_sequence.add(num);
+        continue;
+      }
+      if (num == longest_sequence.getLast()) continue;
+
+      int left = 0;
+      int right = longest_sequence.size() - 1;
+      while (left < right) {
+        int mid = (left + right) / 2;
+        // System.out.println("num: " + num);
+        if (longest_sequence.get(mid) < num) left = mid + 1;
+        else right = mid;
+      }
+      longest_sequence.set(left, num);
+    }
+
+    return longest_sequence.size();
+}
 
   /**
    * Optimized
