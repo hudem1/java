@@ -20,9 +20,8 @@ public class KClosestPointsToOrigin {
     KClosestPointsToOrigin kClosestPointsToOrigin = new KClosestPointsToOrigin();
     int[][] res = kClosestPointsToOrigin.computeSolution(points, 3);
 
-    for (int[] closestPoint: res) {
+    for (int[] closestPoint: res)
       System.out.println("x: " + closestPoint[0] + " y: " + closestPoint[1]);
-    }
   }
 
   /**
@@ -39,6 +38,7 @@ public class KClosestPointsToOrigin {
       @Override
       public int compare(int[] o1, int[] o2) {
         double result = distanceToOrigin(o1) - distanceToOrigin(o2);
+
         // put priority to point farther from origin so that we have only k elements in priority queue
         // ^-- we don't need to have at most k elements in priority queue but little opti
         //     compared to if we just inserted all elements in it with correct priority, and then removed the k top elements
@@ -52,15 +52,14 @@ public class KClosestPointsToOrigin {
 
     for(int[] point: points) {
       kClosestPoints.add(point);
+
       // first add one more and then poll
-      if (kClosestPoints.size() == k + 1) kClosestPoints.poll();
+      if (kClosestPoints.size() > k) kClosestPoints.poll();
     }
 
     // just to have the closest points in correct order
     int i = k - 1;
-    while (!kClosestPoints.isEmpty()) {
-      results[i--] = kClosestPoints.poll();
-    }
+    while (!kClosestPoints.isEmpty()) results[i--] = kClosestPoints.poll();
 
     return results;
   }
@@ -74,15 +73,14 @@ public class KClosestPointsToOrigin {
       @Override
       public int compare(int[] o1, int[] o2) {
         double result = distanceToOrigin(o1) - distanceToOrigin(o2);
+
         // result has already the correct sign but needs to convert double to int
         return result < 0 ? -1 : result > 0 ? 1 : 0;
       }
     });
 
     int[][] results = new int[k][];
-    for (int i = 0; i < k; i++) {
-      results[i] = points.get(i);
-    }
+    for (int i = 0; i < k; i++) results[i] = points.get(i);
 
     return results;
   }

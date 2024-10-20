@@ -12,6 +12,36 @@ import java.util.Stack;
  * ouput: a clone of the graph
  */
 public class CloneGraph {
+  public static void main(String[] args) {
+    Node n1 = new Node(1);
+    Node n2 = new Node(2);
+    Node n3 = new Node(3);
+    Node n4 = new Node(4);
+
+    n1.addNeighbour(n2);
+    n1.addNeighbour(n3);
+
+    n2.addNeighbour(n1);
+    n2.addNeighbour(n4);
+
+    n3.addNeighbour(n1);
+    n3.addNeighbour(n4);
+
+    n4.addNeighbour(n2);
+    n4.addNeighbour(n3);
+
+    /**
+     * Here is the resulting graph:
+     * 1 --- 2
+     * |     |
+     * 3 --- 4
+     */
+
+    CloneGraph cg = new CloneGraph();
+    // results are printed in used functions
+    Node result = cg.computeSolution(n1);
+  }
+
   public static class Node {
     private Integer value;
     private List<Node> neighbours;
@@ -42,7 +72,7 @@ public class CloneGraph {
   /**
    * time complexity: O(n), with n being the number of nodes
    * space complexity: O(n), with n being the number of nodes
-   *  ^-- actually 2 * O(n) because of the nodes creation + call stack growing to n in worst case (if we have a sort of linked list of nodes)
+   *  ^-- actually 2 * O(n) because of the nodes creation + call stack growing to n in worst case (if we have a sort of a linked list of nodes)
    */
   private Node dfsUsingRecursion(Node currentNode, Map<Integer, Node> indicesToNodes) {
     if (indicesToNodes.containsKey(currentNode.value))
@@ -113,35 +143,5 @@ public class CloneGraph {
       }
       System.out.println();
     }
-  }
-
-  public static void main(String[] args) {
-    Node n1 = new Node(1);
-    Node n2 = new Node(2);
-    Node n3 = new Node(3);
-    Node n4 = new Node(4);
-
-    n1.addNeighbour(n2);
-    n1.addNeighbour(n3);
-
-    n2.addNeighbour(n1);
-    n2.addNeighbour(n4);
-
-    n3.addNeighbour(n1);
-    n3.addNeighbour(n4);
-
-    n4.addNeighbour(n2);
-    n4.addNeighbour(n3);
-
-    /**
-     * Here is the resulting graph:
-     * 1 --- 2
-     * |     |
-     * 3 --- 4
-     */
-
-    CloneGraph cg = new CloneGraph();
-    // results are printed in used functions
-    Node result = cg.computeSolution(n1);
   }
 }

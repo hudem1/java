@@ -7,6 +7,18 @@ import java.util.Queue;
  * output: return the number of islands
  */
 public class NumberOfIslands {
+  public static void main(String[] args) {
+    NumberOfIslands noi = new NumberOfIslands();
+
+    int[][] map = {
+      {1, 0, 1},
+      {1, 1, 0},
+      {0, 0, 1},
+    };
+    Integer result = noi.computeSolution(map);
+    System.out.println("The result is: " + result);
+  }
+
   static int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
   // can also write this way
   // static int[][] directions = new int[][] {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -59,17 +71,5 @@ public class NumberOfIslands {
         }
       }
     }
-  }
-
-  public static void main(String[] args) {
-    NumberOfIslands noi = new NumberOfIslands();
-
-    int[][] map = {
-      {1, 0, 1},
-      {1, 1, 0},
-      {0, 0, 1},
-    };
-    Integer result = noi.computeSolution(map);
-    System.out.println("The result is: " + result);
   }
 }

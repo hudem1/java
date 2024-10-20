@@ -71,25 +71,20 @@ public class RotateLinkedList {
     ListNode newTail = head;
 
     while (current.next != null) {
+      // little opti: if `rotations` appears to be < `length`, we already have found the newTail after this while loop
+      if (length > rotations) newTail = newTail.next;
+
       current = current.next;
       length++;
-      if (length > rotations + 1) {
-        newTail = newTail.next;
-      }
     }
 
-    // if rotations < length, we already found the new tail above
-    if (rotations >= length) {
-      int newTailIndex = length - rotations % length;
-      // if rotations is a multiple of the length, no rotations are needed
-      if (newTailIndex == length)
-        return head;
+    if (length == rotations) return head;
 
-      int index = 1;
-      while (index != newTailIndex) {
-        newTail = newTail.next;
-        index++;
-      }
+    // if rotations < length, we already found the new tail above
+    // if rotations > length, we have to find the new tail
+    if (rotations > length) {
+      int newTailIndex = length - rotations % length;
+      for (int i = 1; i < newTailIndex; i++) newTail = newTail.next;
     }
 
     current.next = head;

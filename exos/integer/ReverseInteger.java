@@ -7,6 +7,12 @@
  * goal: reverse it without using strings and reversing them
  */
 public class ReverseInteger {
+  public static void main(String[] args) {
+    ReverseInteger ri = new ReverseInteger();
+    int result = ri.computeSolution(123);
+    System.out.println("The result is: " + result);
+  }
+
   /**
    * time complexity: O(n), with n being the number of digits of the input integer to reverse
    * space complexity: O(1)
@@ -27,11 +33,5 @@ public class ReverseInteger {
     }
 
     return (int) reversedInteger;
-  }
-
-  public static void main(String[] args) {
-    ReverseInteger ri = new ReverseInteger();
-    int result = ri.computeSolution(123);
-    System.out.println("The result is: " + result);
   }
 }

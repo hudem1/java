@@ -11,6 +11,19 @@ import java.util.Queue;
  * info: if 2 elements have equal frequency, return the element coming first alphabetically
  */
 public class TopKFrequentWords {
+  public static void main(String[] args) {
+    String[] words = {"i", "love", "leetcode", "i", "love", "coding"};
+    int k = 2;
+
+    TopKFrequentWords topKFrequentWords = new TopKFrequentWords();
+    String[] topKElements = topKFrequentWords.computeSolution(words, k);
+
+    System.out.println("The result is:");
+    for (String elem: topKElements) {
+      System.out.print(elem + " ");
+    }
+    System.out.println();
+  }
 
   /**
    * time complexity: O(n * log(k)), with n being the number of input words and k the passed parameter
@@ -31,13 +44,10 @@ public class TopKFrequentWords {
   public String[] computeSolution(String[] words, int k) {
     Map<String, Integer> frequencies = new HashMap<>();
 
-    for (String word: words) {
+    for (String word: words)
       frequencies.put(word, frequencies.getOrDefault(word, 0) + 1);
-    }
-    Integer int1;
-    int1.compareTo(int1)
 
-    // we put high priority elements to the bottom of our heap, so that low priority elements get popped before
+    // we put high priority elements to the bottom of our heap, so that low priority elements get polled before
     // and only the highest priority elements remain (we inverse priority in priority queue Comparator)
     Queue<String> topKFrequentWords = new PriorityQueue<>(new Comparator<String>() {
       @Override
@@ -50,10 +60,10 @@ public class TopKFrequentWords {
       }
     });
 
-    for (Map.Entry<String, Integer> wordToFreq: frequencies.entrySet()) {
-      topKFrequentWords.add(wordToFreq.getKey());
+    for (String uniqueWord: frequencies.keySet()) {
+      topKFrequentWords.add(uniqueWord);
 
-      // if size is too big (k + 1), remove the max priority element (which is least priority element actually)
+      // if size is too big (k + 1), remove the max priority element (which is actually the least priority element)
       if (topKFrequentWords.size() > k) topKFrequentWords.poll();
     }
 
@@ -62,25 +72,9 @@ public class TopKFrequentWords {
     // can also do: for (String str: topKFrequentWords) topKElements[i--] = str;
     // but the problem with this is that the for loop might traverse the priority queue in whatever order (not from the most to less priority)
     // probably traverse in a BFS (if its as the impl ive done in c++)
-    while (!topKFrequentWords.isEmpty()) {
-      topKElements[i--] = topKFrequentWords.poll();
-    }
+    while (!topKFrequentWords.isEmpty()) topKElements[i--] = topKFrequentWords.poll();
 
     return topKElements;
-  }
-
-  public static void main(String[] args) {
-    String[] words = {"i", "love", "leetcode", "i", "love", "coding"};
-    int k = 2;
-
-    TopKFrequentWords topKFrequentWords = new TopKFrequentWords();
-    String[] topKElements = topKFrequentWords.computeSolution(words, k);
-
-    System.out.println("The result is:");
-    for (String elem: topKElements) {
-      System.out.print(elem + " ");
-    }
-    System.out.println();
   }
 }
 
