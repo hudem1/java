@@ -3,7 +3,8 @@ import java.util.Map;
 
 /**
  * video: https://www.youtube.com/watch?v=U1q16AFcjKs&list=PLtQWXpf5JNGJagakc_kBtOH5-gd8btjEW&index=38&ab_channel=AlgosWithMichael
- * input: 2 strings, 1 string whose characters to search for and another string where to search the other string's characters
+ *
+ * input: 2 strings, 1 string whose characters to search for and another string where to search the 2nd string's characters
  * ouput: the minimum substring where you can find all of the characters that we searched for (NOT NECESSARILY CONSECUTIVE)
  */
 public class MinimumWindowSubstring {
@@ -24,13 +25,15 @@ public class MinimumWindowSubstring {
     if (input == null || charsToSearch == null || input.isEmpty() || charsToSearch.isEmpty())
       return "";
 
-    Map<Character, Integer> map = new HashMap<>();
+    // the number of each char that we NEED in our substring
+    Map<Character, Integer> charsToCount = new HashMap<>();
 
-    for (char c: charsToSearch.toCharArray()) {
-      map.put(c, map.getOrDefault(c, 0) + 1);
+    for (int i = 0; i < charsToSearch.length(); i++) {
+      Character c = charsToSearch.charAt(i);
+      charsToCount.put(c, charsToCount.getOrDefault(c, 0) + 1);
     }
 
-    int numberUniqueChars = map.size();
+    int numberUniqueCharsNeeded = charsToCount.size();
 
     // if there is a substring in input, it will be at most input.length() size
     int minLength = input.length();
@@ -43,26 +46,23 @@ public class MinimumWindowSubstring {
 
     for (int j = 0; j < input.length(); j++) {
       char elemAtJ = input.charAt(j);
+      if (!charsToCount.containsKey(elemAtJ)) continue;
 
-      if (!map.containsKey(elemAtJ)) continue;
+      charsToCount.put(elemAtJ, charsToCount.get(elemAtJ) - 1);
+      if (charsToCount.get(elemAtJ) == 0) --numberUniqueCharsNeeded;
 
-      map.put(elemAtJ, map.get(elemAtJ) - 1);
-
-      if (map.get(elemAtJ) == 0) --numberUniqueChars;
-
-      if (numberUniqueChars == 0) {
+      if (numberUniqueCharsNeeded == 0) {
         // here we already found a substring but we might find an even smaller one
         // so, let's look for it before setting the minLength and found variables
 
-        while (numberUniqueChars == 0) {
+        while (numberUniqueCharsNeeded == 0) {
           char elemAtI = input.charAt(i++);
+          if (!charsToCount.containsKey(elemAtI)) continue;
 
-          if (!map.containsKey(elemAtI)) continue;
-
-          map.put(elemAtI, map.get(elemAtI) + 1);
+          charsToCount.put(elemAtI, charsToCount.get(elemAtI) + 1);
 
           // if the condition is true, it's because the value at elemAtI has changed from 0 to 1
-          if (map.get(elemAtI) > 0) ++numberUniqueChars;
+          if (charsToCount.get(elemAtI) > 0) ++numberUniqueCharsNeeded;
         }
 
         if (j - i + 2 < minLength) {
